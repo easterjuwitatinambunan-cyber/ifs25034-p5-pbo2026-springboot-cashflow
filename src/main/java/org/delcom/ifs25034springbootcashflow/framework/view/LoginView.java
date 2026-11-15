@@ -16,7 +16,6 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
-import java.util.List;
 import org.delcom.ifs25034springbootcashflow.domain.entity.User;
 import org.delcom.ifs25034springbootcashflow.domain.exception.DomainException;
 import org.delcom.ifs25034springbootcashflow.framework.auth.AuthSession;
@@ -73,18 +72,14 @@ public class LoginView extends Div implements BeforeEnterObserver {
     }
 
     private void doLogin() {
-        String name = username.getValue();
-        String pass = password.getValue();
-        Busy.run(progress, List.of(submit, username, password), () -> {
-            try {
-                User user = authUseCase.login(name, pass);
-                auth.login(user);
-                password.clear();
-                UI.getCurrent().navigate(FinanceView.class);
-            } catch (DomainException e) {
-                Notifications.error(e.getMessage());
-                password.clear();
-            }
-        });
+        try {
+            User user = authUseCase.login(username.getValue(), password.getValue());
+            auth.login(user);
+            password.clear();
+            UI.getCurrent().navigate(FinanceView.class);
+        } catch (DomainException e) {
+            Notifications.error(e.getMessage());
+            password.clear();
+        }
     }
 }
