@@ -1,0 +1,368 @@
+/* ===== Tema dasar ===== */
+html {
+  --lumo-primary-color: #2563EB;
+  --lumo-primary-color-50pct: rgba(37, 99, 235, 0.5);
+  --lumo-primary-color-10pct: rgba(37, 99, 235, 0.1);
+  --lumo-primary-text-color: #1D4ED8;
+  --lumo-clickable-cursor: pointer;
+  --cf-income: #15803D;
+  --cf-expense: #B91C1C;
+  --cf-text: #111827;
+  --cf-muted: #4B5563;
+  --cf-border: #E5E7EB;
+  --cf-surface: #F3F4F6;
+  --cf-dialog-header: #2563EB;
+  --cf-dialog-footer: #F3F4F6;
+}
+
+body {
+  background: #F9FAFB;
+  color: var(--cf-text);
+}
+
+.cf-muted {
+  color: var(--cf-muted);
+  margin: 0;
+}
+
+.cf-strong {
+  font-weight: 600;
+}
+
+/* ===== Kursor: kontrol interaktif = pointer, disabled = not-allowed ===== */
+vaadin-button,
+vaadin-menu-bar-button,
+vaadin-menu-bar-item,
+vaadin-context-menu-item,
+vaadin-tab,
+vaadin-tabs::part(back-button),
+vaadin-tabs::part(forward-button),
+vaadin-drawer-toggle,
+vaadin-upload-file::part(remove-button),
+vaadin-side-nav-item::part(item),
+vaadin-grid-sorter,
+vaadin-select::part(toggle-button),
+vaadin-text-field::part(clear-button),
+vaadin-password-field::part(reveal-button),
+a,
+button {
+  cursor: pointer;
+}
+
+vaadin-button[disabled],
+vaadin-menu-bar-button[disabled],
+vaadin-menu-bar-item[disabled],
+vaadin-context-menu-item[disabled],
+vaadin-tab[disabled],
+vaadin-drawer-toggle[disabled],
+button:disabled {
+  cursor: not-allowed;
+}
+
+vaadin-upload[max-files-reached] vaadin-upload-button,
+vaadin-upload[max-files-reached]::part(upload-button) {
+  cursor: not-allowed;
+}
+
+/* ===== Layout aplikasi ===== */
+.app-title {
+  font-size: var(--lumo-font-size-xl);
+  margin: 0 var(--lumo-space-m);
+  color: var(--cf-dialog-header);
+}
+
+.app-spacer {
+  flex: 1 1 auto;
+}
+
+.app-user {
+  display: flex;
+  align-items: center;
+  gap: var(--lumo-space-s);
+  padding-right: var(--lumo-space-m);
+}
+
+.app-user-name {
+  font-weight: 600;
+  color: var(--cf-text);
+}
+
+@media (max-width: 600px) {
+  .app-user-name {
+    display: none;
+  }
+}
+
+/* ===== Kartu halaman ===== */
+.page-card {
+  background: #FFFFFF;
+  border: 1px solid var(--cf-border);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: var(--lumo-space-l);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.page-card h2 {
+  margin-top: 0;
+}
+
+/* ===== Halaman login / registrasi ===== */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--lumo-space-m);
+  box-sizing: border-box;
+  background: linear-gradient(135deg, #DBEAFE 0%, #F9FAFB 60%);
+}
+
+.auth-card {
+  max-width: 26rem;
+}
+
+.auth-card h1 {
+  font-size: var(--lumo-font-size-xxl);
+  margin: 0;
+  color: var(--cf-dialog-header);
+}
+
+.auth-card a {
+  color: #1D4ED8;
+  font-weight: 600;
+}
+
+/* ===== Kartu ringkasan ===== */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--lumo-space-m);
+  margin-bottom: var(--lumo-space-l);
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lumo-space-xs);
+  padding: var(--lumo-space-m);
+  border-radius: 10px;
+  border: 1px solid var(--cf-border);
+  background: #FFFFFF;
+  border-left: 6px solid var(--cf-dialog-header);
+}
+
+.summary-card.income { border-left-color: var(--cf-income); }
+.summary-card.expense { border-left-color: var(--cf-expense); }
+.summary-card.balance { border-left-color: #1D4ED8; background: #EFF6FF; }
+
+.summary-label {
+  font-size: var(--lumo-font-size-s);
+  color: var(--cf-muted);
+  font-weight: 600;
+}
+
+.summary-value {
+  font-size: var(--lumo-font-size-xl);
+  font-weight: 700;
+  color: var(--cf-text);
+  overflow-wrap: anywhere;
+}
+
+.summary-card.income .summary-value { color: var(--cf-income); }
+.summary-card.expense .summary-value { color: var(--cf-expense); }
+.summary-value.negative { color: var(--cf-expense); }
+
+/* ===== Toolbar ===== */
+.cf-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--lumo-space-m);
+  margin-bottom: var(--lumo-space-m);
+}
+
+.cf-toolbar vaadin-text-field {
+  flex: 1 1 14rem;
+  min-width: 12rem;
+}
+
+.cf-btn-income {
+  --lumo-primary-color: var(--cf-income);
+  --lumo-primary-color-50pct: rgba(21, 128, 61, 0.5);
+}
+
+.cf-btn-expense {
+  --lumo-primary-color: var(--cf-expense);
+  --lumo-primary-color-50pct: rgba(185, 28, 28, 0.5);
+}
+
+/* ===== Grid ===== */
+.cf-grid {
+  border: 1px solid var(--cf-border);
+  border-radius: 8px;
+}
+
+.amount-income { color: var(--cf-income); font-weight: 700; }
+.amount-expense { color: var(--cf-expense); font-weight: 700; }
+
+.type-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: var(--lumo-font-size-xs);
+  font-weight: 700;
+  border: 1px solid currentColor;
+}
+
+.type-badge.income { color: var(--cf-income); background: #F0FDF4; }
+.type-badge.expense { color: var(--cf-expense); background: #FEF2F2; }
+.type-badge.admin { color: #1D4ED8; background: #EFF6FF; }
+.type-badge.user { color: #374151; background: var(--cf-surface); }
+
+.cf-thumb {
+  height: 2.5rem;
+  max-width: 4rem;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
+.cf-readonly-note {
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  color: #1E3A8A;
+  border-radius: 8px;
+  padding: var(--lumo-space-s) var(--lumo-space-m);
+}
+
+/* ===== Form ===== */
+.cf-form {
+  max-width: 32rem;
+}
+
+.cf-profile-avatar {
+  --vaadin-avatar-size: 5rem;
+  width: 5rem;
+  height: 5rem;
+}
+
+.cf-upload {
+  display: flex;
+  flex-direction: column;
+  gap: var(--lumo-space-xs);
+  width: 100%;
+}
+
+.cf-field-label {
+  font-size: var(--lumo-font-size-s);
+  font-weight: 500;
+  color: var(--cf-muted);
+}
+
+.cf-upload-info {
+  font-size: var(--lumo-font-size-s);
+  color: var(--cf-muted);
+  overflow-wrap: anywhere;
+}
+
+/* ===== Dialog: header biru #2563EB, footer #F3F4F6, tombol di kanan ===== */
+vaadin-dialog-overlay.cf-dialog::part(overlay) {
+  max-width: 94vw;
+  width: 32rem;
+}
+
+vaadin-dialog-overlay.cf-dialog::part(header) {
+  background: var(--cf-dialog-header);
+  color: #FFFFFF;
+  align-items: center;
+  gap: var(--lumo-space-m);
+}
+
+vaadin-dialog-overlay.cf-dialog::part(header-content),
+vaadin-dialog-overlay.cf-dialog::part(title) {
+  color: #FFFFFF;
+}
+
+vaadin-dialog-overlay.cf-dialog::part(footer) {
+  background: var(--cf-dialog-footer);
+  border-top: 1px solid #D1D5DB;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--lumo-space-s);
+}
+
+.cf-dialog-badge {
+  background: rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  padding: 2px 12px;
+  font-size: var(--lumo-font-size-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cf-dialog-content {
+  min-width: 0;
+}
+
+.cf-zoom-label {
+  margin-right: auto;
+  color: var(--cf-muted);
+  font-weight: 600;
+}
+
+.cf-preview-frame {
+  max-height: 65vh;
+  overflow: auto;
+  border: 1px solid var(--cf-border);
+  border-radius: 8px;
+  background: #FFFFFF;
+}
+
+.cf-preview-image {
+  display: block;
+  height: auto;
+  max-width: none;
+  cursor: zoom-in;
+}
+
+.cf-preview-image.zoomed {
+  cursor: zoom-out;
+}
+
+/* ===== Indikator loading global (glowing bar di atas layar) ===== */
+.v-loading-indicator {
+  position: fixed;
+  z-index: 2147483647;
+  top: 0;
+  left: 0;
+  right: auto;
+  width: 40%;
+  height: 4px;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0), #2563EB, #93C5FD);
+  box-shadow: 0 0 10px #2563EB, 0 0 4px #93C5FD;
+  animation: cf-loading 1.1s ease-in-out infinite alternate;
+}
+
+.v-loading-indicator.second { width: 60%; animation-duration: 0.8s; }
+.v-loading-indicator.third { width: 80%; animation-duration: 0.6s; }
+
+@keyframes cf-loading {
+  from { transform: translateX(-30%); }
+  to { transform: translateX(170%); }
+}
+
+/* ===== Fokus terlihat (aksesibilitas) ===== */
+a:focus-visible {
+  outline: 2px solid #1D4ED8;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v-loading-indicator { animation: none; }
+}
