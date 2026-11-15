@@ -1,5 +1,6 @@
 package org.delcom.ifs25034springbootcashflow.framework.view;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -37,14 +39,18 @@ public class LoginView extends Div implements BeforeEnterObserver {
         this.authUseCase = authUseCase;
         addClassName("auth-page");
 
-        username.setId("login-username");
+        username.setValueChangeMode(ValueChangeMode.EAGER);
         username.setRequiredIndicatorVisible(true);
         username.setAutocomplete(com.vaadin.flow.component.textfield.Autocomplete.USERNAME);
         username.setWidthFull();
-        password.setId("login-password");
+        idOnInput(username, "login-username");
+
+        password.setValueChangeMode(ValueChangeMode.EAGER);
         password.setRequiredIndicatorVisible(true);
         password.setAutocomplete(com.vaadin.flow.component.textfield.Autocomplete.CURRENT_PASSWORD);
         password.setWidthFull();
+        idOnInput(password, "login-password");
+
         submit.setId("login-submit");
         submit.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         submit.addClickShortcut(Key.ENTER);
@@ -62,6 +68,27 @@ public class LoginView extends Div implements BeforeEnterObserver {
         card.addClassName("auth-card");
         card.add(form);
         add(card);
+    }
+
+    /** Memasang id pada elemen input asli (bukan pembungkus web component) agar mudah diotomasi. */
+    private static void idOnInput(Component field, String id) {
+        field.getElement().executeJs(
+                "const host = this; const id = $0; let tries = 0;"
+                        + "const apply = () => {"
+                        + "  const input = host.querySelector('input');"
+                        + "  if (!input) { return false; }"
+                        + "  input.id = id;"
+                        + "  const label = host.querySelector('[slot=\"label\"]');"
+                        + "  if (label) { label.setAttribute('for', id); }"
+                        + "  return true;"
+                        + "};"
+                        + "if (!apply()) {"
+                        + "  const timer = setInterval(() => {"
+                        + "    tries++;"
+                        + "    if (apply() || tries > 100) { clearInterval(timer); }"
+                        + "  }, 50);"
+                        + "}",
+                id);
     }
 
     @Override
