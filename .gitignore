@@ -3,7 +3,7 @@ HELP.md
 
 ### Environment ###
 .env
-!.env.example
+!.env.
 
 ### Uploads ###
 uploads/
