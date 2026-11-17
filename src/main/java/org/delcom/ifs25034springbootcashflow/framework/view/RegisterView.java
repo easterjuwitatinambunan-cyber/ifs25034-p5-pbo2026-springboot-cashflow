@@ -4,7 +4,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -24,7 +24,7 @@ import org.delcom.ifs25034springbootcashflow.usecase.AuthUseCase;
 
 @Route("register")
 @PageTitle("Daftar | Cashflow")
-public class RegisterView extends Div implements BeforeEnterObserver {
+public class RegisterView extends Main implements BeforeEnterObserver {
 
     private final AuthSession auth;
     private final AuthUseCase authUseCase;

@@ -56,8 +56,8 @@ public class TransactionGrid extends Grid<Transaction> {
     private com.vaadin.flow.component.Component proofCell(Transaction t) {
         String url = FileStorage.url(t.getProofPath());
         if (url == null) {
-            Span none = new Span("-");
-            none.getElement().setAttribute("aria-label", "Tanpa bukti");
+            Span none = new Span("Tidak ada");
+            none.addClassName("cf-muted");
             return none;
         }
         String alt = "Bukti transaksi " + t.getId() + ": " + t.getDescription();

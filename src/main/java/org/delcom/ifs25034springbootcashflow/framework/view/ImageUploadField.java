@@ -34,7 +34,6 @@ final class ImageUploadField extends Div {
         upload.setMaxFileSize(5 * 1024 * 1024);
         upload.setUploadButton(new Button(buttonText));
         upload.setDropLabel(new Span("atau seret gambar ke sini (PNG, JPG, GIF, WEBP; maks. 5 MB)"));
-        upload.getElement().setAttribute("aria-label", label);
         upload.addFileRejectedListener(e -> Notifications.error(e.getErrorMessage()));
         upload.addFileRemovedListener(e -> clear());
         add(caption, upload, info);

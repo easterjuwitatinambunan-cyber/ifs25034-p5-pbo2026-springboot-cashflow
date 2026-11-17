@@ -10,6 +10,7 @@ import org.delcom.ifs25034springbootcashflow.domain.PasswordHasher;
 import org.delcom.ifs25034springbootcashflow.domain.repository.ITransactionRepository;
 import org.delcom.ifs25034springbootcashflow.domain.repository.IUserRepository;
 import org.delcom.ifs25034springbootcashflow.framework.auth.AuthSession;
+import org.delcom.ifs25034springbootcashflow.framework.web.CacheControlFilter;
 import org.delcom.ifs25034springbootcashflow.usecase.AuthUseCase;
 import org.delcom.ifs25034springbootcashflow.usecase.FinanceUseCase;
 import org.delcom.ifs25034springbootcashflow.usecase.UserUseCase;
@@ -18,6 +19,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -77,6 +80,13 @@ public class AppConfig {
                                            @Value("${app.root-username}") String rootUsername,
                                            @Value("${app.root-password}") String rootPassword) {
         return args -> authUseCase.ensureRootAdmin(rootUsername, rootPassword);
+    }
+
+    /** Cache-Control panjang untuk aset statis berhash (audit Lighthouse: efficient cache policy). */
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    public CacheControlFilter cacheControlFilter() {
+        return new CacheControlFilter();
     }
 
     @Bean

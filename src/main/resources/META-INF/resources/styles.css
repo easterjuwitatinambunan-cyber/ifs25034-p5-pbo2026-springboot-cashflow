@@ -366,3 +366,16 @@ a:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .v-loading-indicator { animation: none; }
 }
+
+/* ===== Landmark: header (banner) dan main ===== */
+.app-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.app-content {
+  display: block;
+  min-height: 100%;
+}

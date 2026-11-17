@@ -1,11 +1,15 @@
 package org.delcom.ifs25034springbootcashflow.framework.view;
 
+import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Header;
+import com.vaadin.flow.component.html.Main;
+import com.vaadin.flow.component.html.Nav;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
@@ -19,12 +23,16 @@ import org.delcom.ifs25034springbootcashflow.adapter.storage.FileStorage;
 import org.delcom.ifs25034springbootcashflow.domain.entity.User;
 import org.delcom.ifs25034springbootcashflow.framework.auth.AuthSession;
 
-/** Layout aplikasi: sidebar, menu avatar (Profil/Keluar), dan pemeriksaan login global. */
+/**
+ * Layout aplikasi: sidebar, menu avatar (Profil/Keluar), dan pemeriksaan login global.
+ * Seluruh konten berada di dalam landmark: header (banner), nav (navigasi), dan main.
+ */
 public class MainLayout extends AppLayout implements BeforeEnterObserver {
 
     private final AuthSession auth;
     private final SideNav nav = new SideNav();
     private final Div userArea = new Div();
+    private final Main content = new Main();
 
     public MainLayout(AuthSession auth) {
         this.auth = auth;
@@ -37,10 +45,26 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver {
         Div spacer = new Div();
         spacer.addClassName("app-spacer");
         userArea.addClassName("app-user");
-        addToNavbar(toggle, title, spacer, userArea);
+        Header header = new Header(toggle, title, spacer, userArea);
+        header.addClassName("app-header");
+        addToNavbar(header);
 
         nav.setLabel("Menu");
-        addToDrawer(nav);
+        Nav navigation = new Nav(nav);
+        navigation.getElement().setAttribute("aria-label", "Navigasi utama");
+        addToDrawer(navigation);
+
+        content.addClassName("app-content");
+        setContent(content);
+    }
+
+    /** Konten halaman selalu dibungkus elemen main (landmark utama). */
+    @Override
+    public void showRouterLayoutContent(HasElement routerContent) {
+        content.getElement().removeAllChildren();
+        if (routerContent != null) {
+            content.getElement().appendChild(routerContent.getElement());
+        }
     }
 
     @Override
@@ -67,6 +91,8 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver {
         }
 
         Avatar avatar = new Avatar(user.getFullName());
+        // Satu huruf awal nama selalu bagian dari nama aksesibel "Menu akun <nama>".
+        avatar.setAbbreviation(user.getFullName().substring(0, 1).toUpperCase());
         String photo = FileStorage.url(user.getPhotoPath());
         if (photo != null) {
             avatar.setImage(photo);

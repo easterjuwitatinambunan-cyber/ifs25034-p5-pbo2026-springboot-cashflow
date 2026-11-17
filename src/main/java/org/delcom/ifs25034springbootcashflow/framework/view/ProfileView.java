@@ -93,6 +93,17 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
         avatar.setImage(url);
     }
 
+    /** Konten dibungkus elemen main, jadi MainLayout dicari dari leluhur terdekat. */
+    private void refreshLayout() {
+        com.vaadin.flow.component.Component node = this;
+        while (node != null && !(node instanceof MainLayout)) {
+            node = node.getParent().orElse(null);
+        }
+        if (node instanceof MainLayout layout) {
+            layout.refresh();
+        }
+    }
+
     private void doSave() {
         String name = fullName.getValue();
         String newPassword = password.getValue();
@@ -120,8 +131,7 @@ public class ProfileView extends VerticalLayout implements BeforeEnterObserver {
                 confirm.clear();
                 photo.reset();
                 show(updated);
-                getParent().filter(MainLayout.class::isInstance).map(MainLayout.class::cast)
-                        .ifPresent(MainLayout::refresh);
+                refreshLayout();
                 Notifications.success(presenter.profileUpdatedMessage());
             } catch (DomainException e) {
                 if (newPhoto != null) {
