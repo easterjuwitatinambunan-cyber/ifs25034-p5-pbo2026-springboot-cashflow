@@ -94,7 +94,7 @@ public class UserTransactionsView extends VerticalLayout implements BeforeEnterO
         try {
             target = users.getUser(parseUserId(event));
         } catch (DomainException e) {
-            Notifications.error(presenter.errorMessage(e));
+            // ID kosong/tidak valid: kembali ke daftar pengguna tanpa notifikasi melayang.
             event.forwardTo(UsersView.class);
             return;
         }

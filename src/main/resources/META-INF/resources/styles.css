@@ -379,3 +379,10 @@ a:focus-visible {
   display: block;
   min-height: 100%;
 }
+
+/* Ikon pemicu menu akun (tanpa teks) */
+.app-user-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #374151;
+}

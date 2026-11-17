@@ -1,5 +1,6 @@
 package org.delcom.ifs25034springbootcashflow.framework.view;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -11,6 +12,7 @@ import com.vaadin.flow.component.html.Header;
 import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.html.Nav;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.menubar.MenuBarVariant;
@@ -90,16 +92,22 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver {
             nav.addItem(new SideNavItem("Pengguna", UsersView.class, VaadinIcon.USERS.create()));
         }
 
-        Avatar avatar = new Avatar(user.getFullName());
-        // Satu huruf awal nama selalu bagian dari nama aksesibel "Menu akun <nama>".
-        avatar.setAbbreviation(user.getFullName().substring(0, 1).toUpperCase());
+        // Pemicu menu tanpa teks (foto atau ikon): nama aksesibel "Menu akun <nama>" tidak
+        // bentrok dengan teks yang terlihat (aturan Axe label-content-name-mismatch).
         String photo = FileStorage.url(user.getPhotoPath());
+        Component trigger;
         if (photo != null) {
+            Avatar avatar = new Avatar(user.getFullName());
             avatar.setImage(photo);
+            trigger = avatar;
+        } else {
+            Icon icon = VaadinIcon.USER.create();
+            icon.addClassName("app-user-icon");
+            trigger = icon;
         }
         MenuBar menu = new MenuBar();
         menu.addThemeVariants(MenuBarVariant.LUMO_TERTIARY_INLINE);
-        var root = menu.addItem(avatar);
+        var root = menu.addItem(trigger);
         root.getElement().setAttribute("aria-label", "Menu akun " + user.getFullName());
         root.getSubMenu().addItem("Profil", e -> UI.getCurrent().navigate(ProfileView.class));
         root.getSubMenu().addItem("Keluar", e -> logout());
